@@ -1,0 +1,4 @@
+pass: Cu55KLPqD3mgSGF1
+
+
+mongodb+srv://abishektimsnew:Cu55KLPqD3mgSGF1@cluster0.d4dfcho.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

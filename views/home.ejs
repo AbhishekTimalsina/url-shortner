@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <title>short</title>
+  </head>
+  <body
+    class="bg-gray-100 min-h-screen flex flex-col justify-center items-center"
+  >
+    <div class="w-full max-w-4xl p-8 space-y-8 bg-white shadow-lg rounded-xl">
+      <div>
+        <div class="text-center">
+          <h1 class="text-3xl font-bold text-gray-800">QuickLink</h1>
+          <p class="text-gray-500 mt-2">Shorten your URLs in seconds</p>
+        </div>
+
+        <form class="space-y-6" method="post">
+          <div>
+            <label
+              for="long-url"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Enter your long URL <%= message %>
+            </label>
+            <div class="mt-1 flex rounded-md shadow-sm">
+              <input
+                type="url"
+                name="url"
+                id="long-url"
+                required
+                placeholder="https://example.com/very-long-url-here"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm cursor-pointer text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Shorten URL
+            </button>
+          </div>
+        </form>
+
+        <% if(newURL) { %>
+        <div id="result" class="mt-4">
+          <div class="bg-green-50 p-4 rounded-md">
+            <div class="flex items-center">
+              <div
+                class="text-sm text-green-700 flex flex-col"
+                id="short-url-text"
+              >
+                New URL Created:
+              </div>
+              <p class="ml-4"><%= newURL.shortURL %></p>
+              <button
+                id="copy-btn"
+                class="ml-auto bg-green-100 text-green-800 px-2 py-1 rounded text-xs hover:bg-green-200 cursor-pointer"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+
+      <!-- Table  -->
+
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          All Shortened URLs
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3">Full URL</th>
+                <th scope="col" class="px-6 py-3">Short URL</th>
+                <th scope="col" class="px-6 py-3">Clicks</th>
+                <th scope="col" class="px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <% if(urls.length==0){ %>
+            <tbody>
+              <tr>
+                <td colspan="4" class="text-center text-xl py-2">Empty</td>
+              </tr>
+            </tbody>
+            <% } else{ %>
+
+            <tbody>
+              <% urls.forEach(url=> { %>
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs"
+                >
+                  <%= url.originalURL %>
+                </td>
+                <td class="px-6 py-4">
+                  <a
+                    href="<%= url.shortURL %>"
+                    class="text-blue-600 hover:underline"
+                    target="_blank"
+                    ><%= url.shortURL %></a
+                  >
+                </td>
+                <td class="px-6 py-4"><%= url.clicks %></td>
+                <td class="px-6 py-4">
+                  <form
+                    action="<%= url.shortURL %>?_method=DELETE"
+                    method="post"
+                  >
+                    <button
+                      class="text-red-600 hover:text-red-900 mr-2 cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+            <% } %>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let copyBtn = document.getElementById("copy-btn");
+    let localStorageItems = JSON.parse(localStorage.getItem("allurls"));
+
+    // copy the new link
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        copyBtn.textContent = "Copied";
+        copyBtn.style.background = "#7bf1a8";
+        navigator.clipboard.writeText("<%= newURL?.shortURL %>");
+      });
+    }
+
+    // // add items to localstorage
+    // if ("<%= newURL %>") {
+    //   localStorageItems = localStorageItems || [];
+    //   let newItem = {
+    //     originalURL: "<%= newURL?.originalURL %>",
+    //     shortURL: "<%= newURL?.shortURL %>",
+    //     clicks: "<%= newURL?.clicks %>",
+    //     _id: "<%= newURL?._id %>",
+    //   };
+    //   localStorageItems.push(newItem);
+    //   localStorage.setItem("allurls", JSON.stringify(localStorageItems));
+    // }
+  </script>
+</html>
