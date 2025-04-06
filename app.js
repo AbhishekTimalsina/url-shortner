@@ -13,9 +13,13 @@ const {
 } = require("./controller/url");
 
 const { getHomePage } = require("./controller/home");
+const { job } = require("./cron.js");
+
 require("dotenv").config();
 
 let MONGOURI = process.env.MONGO_URI;
+
+job.start();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));

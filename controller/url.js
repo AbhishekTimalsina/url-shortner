@@ -32,7 +32,6 @@ exports.getOriginalURL = async function (req, res) {
 
 exports.deleteOriginalURL = async function (req, res) {
   let param = req.params;
-  console.log("hello hai hello");
   await URL.findOneAndDelete({
     shortURL: `${process.env.WEB_URI}/${param.id}`,
   });
